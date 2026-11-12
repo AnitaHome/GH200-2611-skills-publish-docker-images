@@ -5,6 +5,7 @@ on:
     branches:
       - main
 
+# 關鍵權限宣告：賦予 GITHUB_TOKEN 寫入 Packages 與讀取儲存庫內容的權限
 permissions:
   contents: read
   packages: write
@@ -23,8 +24,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 建置並推送 Docker 映像檔
+      - name: 建置並推送 Docker 映像檔 (原生 Docker CLI)
         run: |
+          # 注意：Docker 規範映像檔路徑必須全小寫
           IMAGE_NAME="ghcr.io/${{ github.repository }}/stackoverflown:main"
           IMAGE_NAME_LOWER=$(echo "$IMAGE_NAME" | tr '[:upper:]' '[:lower:]')
           docker build . --tag "$IMAGE_NAME_LOWER"
